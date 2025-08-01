@@ -14,16 +14,18 @@ jobs:
 
       - name: Set Git User
         run: |
+    mkdir -p logs
           git config --global user.name "nosense00-bot"
           git config --global user.email "bot@users.noreply.github.com"
 
       - name: Generate Random Commit Message
         run: |
+    mkdir -p logs
           MESSAGES=("pulse: Gotchipus summon" "update: soul bond" "chore: activity refresh" "fix: summon update" "refactor: evolution logs" "data: summon sync")
           MSG=${MESSAGES[$RANDOM % ${#MESSAGES[@]}]}
           echo "$(date) - $MSG" >> activity-sync.txt
           git add activity-sync.txt
-          git commit -m "$MSG" || echo "No changes to commit"
+          git commit -m "$MSG" || echo "No changes to commit" || echo "No changes, skipping commit"
 
       - name: Push Commit
         run: git push origin main
